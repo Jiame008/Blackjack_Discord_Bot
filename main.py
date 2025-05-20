@@ -117,8 +117,8 @@ while isPlaying == True:
 
     if len(deckDealer) > 0:
         for i in range(0, len(deckDealer)):
-            barajaCartas.append(deck[0])
-            deck.remove(deck[0])
+            barajaCartas.append(deckDealer[0])
+            deckDealer.remove(deckDealer[0])
     
     #Mezclar la baraja principal
     barajaCartas = MezclarCartas(barajaCartas)
