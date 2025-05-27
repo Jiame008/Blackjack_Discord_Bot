@@ -1,6 +1,44 @@
 import random
+import asyncio, discord, requests, pyttsx3
+from discord.ext import commands
 
-#Variables
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix='$', intents=intents)
+engine = pyttsx3.init()
+
+def hablar(text: str):
+    engine.say(text)
+    engine.runAndWait() 
+
+@bot.event
+async def on_ready():
+    print(f'Hemos iniciado sesión como {bot.user}')
+
+@bot.event
+async def respuesta_ante_comando_inexistente(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send("¡Comando no encontrado! Usa `$ayuda` para ver la lista de comandos disponibles.")
+
+@bot.command()
+async def hola(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!')
+    
+@bot.command()
+async def ayuda(ctx):
+    ayuda_texto = """Comandos disponibles:
+    $hola - Saluda al bot
+    $reglas - Explica las reglas de Blackjack"""
+    await ctx.send(ayuda_texto)
+
+@bot.command()
+async def reglas(ctx):
+    reglas_texto = """Reglas de BlackJack
+    Blackjack es un juego de cartas que consiste en recibir 2 cartas, e seguir cogiendo cartas para acercarse lo mas que uno puede a 21, sin pasarse."""
+    await ctx.send(reglas_texto)
+
+
+#Variables de blackjack
 #-----------------------------
 isPlaying = True #Variable bool para ver si estamos jugando
 isPlayingMatch = True #Variable bool para ver si esta en una partida
@@ -191,4 +229,7 @@ while isPlaying == True:
             #Si vas a coger una carta
             elif choice == "P":
                 DarCarta(deck, barajaCartas)
+
+
+bot.run("TOKEN")
 
